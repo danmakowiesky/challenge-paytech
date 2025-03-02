@@ -2,11 +2,12 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  ManyToOne,
+  ManyToMany,
+  JoinTable,
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Team } from '../team/team.entity'; // Certifique-se de importar a entidade Team
+import { Team } from '../team/team.entity';
 
 @Entity()
 export class User {
@@ -22,8 +23,19 @@ export class User {
   @Column()
   password: string;
 
-  @ManyToOne(() => Team, (team) => team.users) // Relacionamento ManyToOne com Team
-  team: Team; // O campo de chave estrangeira será gerado automaticamente
+  @ManyToMany(() => Team, (team) => team.users)
+  @JoinTable({
+    name: 'user_teams',
+    joinColumn: {
+      name: 'userId',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'teamId',
+      referencedColumnName: 'id',
+    },
+  })
+  teams: Team[];
 
   @CreateDateColumn()
   createdAt: Date;

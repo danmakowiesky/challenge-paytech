@@ -2,7 +2,7 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  OneToMany,
+  ManyToMany,
   CreateDateColumn,
   UpdateDateColumn,
   Index,
@@ -18,12 +18,12 @@ export class Team {
   @Column()
   name: string;
 
-  @OneToMany(() => User, (user) => user.team)
+  @ManyToMany(() => User, (user) => user.teams)
   users: User[];
 
   @CreateDateColumn()
-  createdAt: Date; // Data de cadastro
+  createdAt: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date; // Data de atualização
+  updatedAt: Date;
 }
