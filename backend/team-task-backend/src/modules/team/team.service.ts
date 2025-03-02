@@ -26,4 +26,13 @@ export class TeamService {
       throw new InternalServerErrorException('Erro ao criar time');
     }
   }
+
+  async getAllTeams(): Promise<Team[]> {
+    try {
+      return await this.teamRepository.getAllTeams();
+    } catch (error) {
+      this.logger.error('Erro ao buscar todos os times', { error });
+      throw new InternalServerErrorException('Erro ao buscar times');
+    }
+  }
 }

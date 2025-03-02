@@ -35,4 +35,19 @@ export class TeamController {
       throw new BadRequestException('Erro ao processar a requisição.');
     }
   }
+
+  @UseGuards(AuthGuard)
+  @Post()
+  async getAll() {
+    try {
+      return await this.teamService.getAllTeams();
+    } catch (error) {
+      if (error instanceof BadRequestException) {
+        throw new BadRequestException({
+          message: 'Erro ao processar a requisição.',
+          details: error.getResponse(),
+        });
+      }
+    }
+  }
 }

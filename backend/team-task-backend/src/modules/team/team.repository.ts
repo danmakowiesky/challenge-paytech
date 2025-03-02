@@ -12,4 +12,8 @@ export class TeamRepository extends Repository<Team> {
     const team = this.create({ name });
     return await this.save(team);
   }
+
+  async getAllTeams(): Promise<Team[]> {
+    return await this.find();
+  }
 }
