@@ -23,4 +23,9 @@ export class UserRepository {
   async getAll(): Promise<User[]> {
     return await this.userRepository.find();
   }
+
+  async findByUserName(email: string): Promise<any> {
+    console.log('respository', email);
+    return await this.userRepository.findOne({ where: { email } });
+  }
 }
