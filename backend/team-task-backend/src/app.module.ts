@@ -6,6 +6,7 @@ import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { AuthService } from './modules/auth/auth.service';
 import { AuthController } from './modules/auth/auth.controller';
+import { TeamModule } from './modules/team/team.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { AuthController } from './modules/auth/auth.controller';
     DatabaseModule,
     UserModule,
     AuthModule,
+    TeamModule,
   ],
   controllers: [AuthController],
   providers: [AuthService],
