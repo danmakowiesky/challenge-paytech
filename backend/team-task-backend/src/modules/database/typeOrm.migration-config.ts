@@ -2,6 +2,7 @@ import { ConfigService } from '@nestjs/config';
 import { config } from 'dotenv';
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { User } from './../user/user.entity';
+import { Team } from '../team/team.entity';
 
 config();
 
@@ -14,7 +15,7 @@ const dataSourceOptions: DataSourceOptions = {
   username: configService.get('POSTGRES_USER'),
   password: configService.get('POSTGRES_PASSWORD'),
   database: configService.get('POSTGRES_DB'),
-  entities: [User],
+  entities: [User, Team],
   migrations: [__dirname + '/migrations/*.ts'],
 };
 
