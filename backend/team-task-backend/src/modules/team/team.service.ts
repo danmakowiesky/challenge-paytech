@@ -35,4 +35,17 @@ export class TeamService {
       throw new InternalServerErrorException('Erro ao buscar times');
     }
   }
+
+  async deleteTeamById(id: string): Promise<unknown> {
+    try {
+      const team = await this.teamRepository.findById(id);
+      if (!team) {
+        throw new InternalServerErrorException('Id não encontrado');
+      }
+      return await this.teamRepository.deleteTeam(team);
+    } catch (error) {
+      this.logger.error('Erro ao deletar time', { error });
+      throw new InternalServerErrorException('Erro ao deletar time');
+    }
+  }
 }

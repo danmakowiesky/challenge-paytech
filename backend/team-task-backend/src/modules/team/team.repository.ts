@@ -16,4 +16,12 @@ export class TeamRepository extends Repository<Team> {
   async getAllTeams(): Promise<Team[]> {
     return await this.find();
   }
+
+  async findById(id: string): Promise<Team> {
+    return await this.findOne({ where: { id } });
+  }
+
+  async deleteTeam(team: Team): Promise<unknown> {
+    return await this.delete(team.id);
+  }
 }

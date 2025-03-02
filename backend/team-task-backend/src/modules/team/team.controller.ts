@@ -4,6 +4,10 @@ import {
   Post,
   BadRequestException,
   UseGuards,
+  Get,
+  Param,
+  Delete,
+  NotFoundException,
 } from '@nestjs/common';
 import { TeamService } from './team.service';
 import { z } from 'zod';
@@ -17,6 +21,10 @@ const CreateTeamDtoSchema = z.object({
     .max(255, 'O nome do time não pode ter mais de 255 caracteres')
     .nonempty('O nome do time é obrigatório'),
 });
+
+export const idSchema = z
+  .string()
+  .uuid({ message: 'O id informado não é um UUID válido.' });
 
 @Controller('team')
 export class TeamController {
@@ -37,7 +45,7 @@ export class TeamController {
   }
 
   @UseGuards(AuthGuard)
-  @Post()
+  @Get()
   async getAll() {
     try {
       return await this.teamService.getAllTeams();
@@ -48,6 +56,32 @@ export class TeamController {
           details: error.getResponse(),
         });
       }
+    }
+  }
+
+  @Delete(':id')
+  async deleteById(@Param('id') id: string) {
+    const parsed = idSchema.safeParse(id);
+    if (!parsed.success) {
+      throw new BadRequestException({
+        message: 'Erro de validação',
+        details: parsed.error.format(),
+      });
+    }
+    try {
+      const deleted = await this.teamService.deleteTeamById(id);
+      if (!deleted) {
+        throw new NotFoundException('Time não encontrado.');
+      }
+      return { message: 'Time deletado com sucesso.' };
+    } catch (error) {
+      if (error instanceof BadRequestException) {
+        throw new BadRequestException({
+          message: 'Erro ao processar a requisição.',
+          details: error.getResponse(),
+        });
+      }
+      throw error;
     }
   }
 }
