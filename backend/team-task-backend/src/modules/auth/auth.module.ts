@@ -18,7 +18,7 @@ import { ConfigService } from '@nestjs/config';
       }),
       inject: [ConfigService],
     }),
-    UserModule, // Verifique se está importando o UserModule corretamente
+    UserModule,
   ],
   controllers: [AuthController],
   providers: [AuthService],

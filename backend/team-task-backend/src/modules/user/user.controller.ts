@@ -5,10 +5,12 @@ import {
   BadRequestException,
   Get,
   InternalServerErrorException,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { z } from 'zod';
 import { UserDTO } from './user.dto';
+import { AuthGuard } from '../auth/auth.guard';
 
 const CreateUserDtoSchema = z.object({
   email: z
@@ -39,6 +41,7 @@ export class UserController {
     }
   }
 
+  @UseGuards(AuthGuard)
   @Get()
   async getAllUsers(): Promise<UserDTO[]> {
     try {
