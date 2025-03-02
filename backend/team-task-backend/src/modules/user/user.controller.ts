@@ -1,4 +1,11 @@
-import { Body, Controller, Post, BadRequestException } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  BadRequestException,
+  Get,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { z } from 'zod';
 import { UserDTO } from './user.dto';
@@ -16,6 +23,7 @@ const CreateUserDtoSchema = z.object({
 
 @Controller('user')
 export class UserController {
+  logger: any;
   constructor(private readonly userService: UserService) {}
 
   @Post()
@@ -28,6 +36,16 @@ export class UserController {
         throw new BadRequestException(error.errors);
       }
       throw new BadRequestException('Erro ao processar a requisição.');
+    }
+  }
+
+  @Get()
+  async getAllUsers(): Promise<UserDTO[]> {
+    try {
+      return await this.userService.getAllUsers();
+    } catch (error) {
+      this.logger.error(`Erro ao tentar listar todos os usuários`, error.stack);
+      throw new InternalServerErrorException('Erro ao buscar usuários');
     }
   }
 }

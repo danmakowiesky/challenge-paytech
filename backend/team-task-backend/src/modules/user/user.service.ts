@@ -21,4 +21,14 @@ export class UserService {
       throw new InternalServerErrorException('Erro ao criar usuário');
     }
   }
+
+  async getAllUsers(): Promise<UserDTO[]> {
+    try {
+      const users = await this.userRepository.getAll();
+      return users;
+    } catch (error) {
+      this.logger.error('Erro ao buscar todos os usuários', { error });
+      throw new InternalServerErrorException('Erro ao buscar usuários');
+    }
+  }
 }
